@@ -6,12 +6,12 @@ const DeviceWidth = Dimensions.get('window').width;
 
 export default class App extends React.Component {
    
-  lrdiagonal = 0;
-  rldiagonal = 0;
-  XRowCount= [0,0,0];
-  XColCount= [0,0,0];
-  ORowCount= [0,0,0];
-  OColCount= [0,0,0];
+  lrdiagonal = 0;   //counter for left to right diagonal
+  rldiagonal = 0;   //counter for left to right diagonal
+  XRowCount= [0,0,0];   //counter for how many Xs in each row
+  XColCount= [0,0,0];   //counter for how many Xs in each column
+  ORowCount= [0,0,0];   //counter for how many Os in each row
+  OColCount= [0,0,0];   //counter for how many Os in each column
 
   state = {
     turn: '',
@@ -48,7 +48,7 @@ export default class App extends React.Component {
   }
 
 
-
+//method to check for a tie by counting how many plays have been made
   checkForTie(){
     var count = this.state.plays;
     count++;  //increment plays to check if game is over
@@ -61,10 +61,12 @@ export default class App extends React.Component {
   }
 
 
-
+//method to check for wins by annoucning a win when the total count for Xs or Os is equal to 3 across a row, column, or diagonal
   checkForWin(row, col){
 
     //diagonal wins check
+
+    //diagonal wins from EFT TO RIGHT check
     if(row == col){
 
       //see if middle cell is filled
@@ -103,6 +105,7 @@ export default class App extends React.Component {
       }
     }
 
+    
     //check for wins across columns and rows
     if(this.state.turn == 'X'){
       this.XRowCount[row]++;
@@ -113,7 +116,6 @@ export default class App extends React.Component {
         this.setState({winner:'X'});
       }
     }
-
     else{
       this.ORowCount[row]++;
       this.OColCount[col]++;
@@ -123,6 +125,7 @@ export default class App extends React.Component {
         this.setState({winner:'O'});
       }
     }
+
   }
 
 
@@ -131,16 +134,14 @@ export default class App extends React.Component {
   play = (rowNo, colNo)=>{
     
     this.state.board[rowNo][colNo]=this.state.turn; //update state with value X or O
-    
+    this.forceUpdate();
 
     this.checkForWin(rowNo, colNo);
     this.checkForTie();
 
     //alternate turns between X and O
     if (this.state.turn == 'X') {this.setState({turn: 'O'})}
-    else {this.setState({turn: 'X'})}
-
-    this.forceUpdate();
+    else {this.setState({turn: 'X'})} 
   }
 
   componentDidMount(){
@@ -197,16 +198,17 @@ export default class App extends React.Component {
             {/* draw lines for horizontal columns on win */}
             {(this.XRowCount[0] == 3 || this.ORowCount[0] == 3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'}, {translateX: -125} ]} ]}></View>    :  null}
             {(this.XRowCount[1] == 3 || this.ORowCount[1] == 3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'} ]} ]}></View>     :  null}
-            {(this.XRowCount[2] == 3 || this.ORowCount[2] == 3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'}, {translateX: 125} ]} ]}></View>     : null}
+            {(this.XRowCount[2] == 3 || this.ORowCount[2] == 3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'}, {translateX: 125} ]} ]}></View>     :  null}
 
             {/* draw lines for horizontals on win */}
-            {(this.rldiagonal == 3 || this.rldiagonal == -3) ? <View style={[ styles.diag, {transform: [ {rotate: '45deg'}, {translateX: -3} ]} ]} ></View>    :  null}
-            {(this.lrdiagonal == 3 || this.lrdiagonal == -3) ? <View style={[ styles.diag, {transform: [ {rotate: '-45deg'}, {translateX: 3} ]} ]} ></View>    :  null}
+            {(this.rldiagonal == 3 || this.rldiagonal == -3) ? <View style={[ styles.diag, {transform: [ {rotate: '45deg'}, {translateX: -3} ]} ]} ></View>    :    null}
+            {(this.lrdiagonal == 3 || this.lrdiagonal == -3) ? <View style={[ styles.diag, {transform: [ {rotate: '-45deg'}, {translateX: 3} ]} ]} ></View>    :    null}
 
+            {/* announce winner */}
             {this.state.winner == 'X'  ?  <Text style={styles.win}>Player X wins ! </Text>     :     null }
             {this.state.winner == 'O'  ?  <Text style={styles.win}>Player O wins ! </Text>     :     null }
             
-            {/*if its a tie*/}
+            {/*announce tie*/}
             {(this.state.tie == true && this.state.winner=='') ?  <Text style={styles.tie}>TIE GAME ! </Text>     :     null }
 
           <TouchableOpacity style={styles.reset} onPress={()=>{this.reset()}}>
