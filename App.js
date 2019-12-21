@@ -8,10 +8,8 @@ export default class App extends React.Component {
    
   lrdiagonal = 0;   //counter for left to right diagonal
   rldiagonal = 0;   //counter for left to right diagonal
-  XRowCount= [0,0,0];   //counter for how many Xs in each row
-  XColCount= [0,0,0];   //counter for how many Xs in each column
-  ORowCount= [0,0,0];   //counter for how many Os in each row
-  OColCount= [0,0,0];   //counter for how many Os in each column
+  RowCount= [0,0,0];   //counter for how many Xs and Os in each row
+  ColCount= [0,0,0];   //counter for how many Xs and Os in each column
 
   state = {
     turn: '',
@@ -29,10 +27,8 @@ export default class App extends React.Component {
   reset(){
     this.lrdiagonal = 0;
     this.rldiagonal = 0;
-    this.XRowCount= [0,0,0];
-    this.XColCount= [0,0,0];
-    this.ORowCount= [0,0,0];
-    this.OColCount= [0,0,0];
+    this.RowCount= [0,0,0];
+    this.ColCount= [0,0,0];
 
     this.setState({
       turn: 'X',
@@ -62,11 +58,12 @@ export default class App extends React.Component {
 
 
 //method to check for wins by annoucning a win when the total count for Xs or Os is equal to 3 across a row, column, or diagonal
+//whenever there is an x increment by 1, whenever there is an O decrement by 1
+//X wins when there is a 3 and O wins whenever there is a -3
   checkForWin(row, col){
 
     //diagonal wins check
-
-    //diagonal wins from EFT TO RIGHT check
+    //diagonal wins from LEFT TO RIGHT check
     if(row == col){
 
       //see if middle cell is filled
@@ -108,19 +105,19 @@ export default class App extends React.Component {
     
     //check for wins across columns and rows
     if(this.state.turn == 'X'){
-      this.XRowCount[row]++;
-      this.XColCount[col]++;
+      this.RowCount[row]++;
+      this.ColCount[col]++;
 
-      if (this.XRowCount[row] == 3 || this.XColCount[col] == 3 ){
+      if (this.RowCount[row] == 3 || this.ColCount[col] == 3 ){
         //X WINS!!
         this.setState({winner:'X'});
       }
     }
     else{
-      this.ORowCount[row]++;
-      this.OColCount[col]++;
+      this.RowCount[row]--;
+      this.ColCount[col]--;
 
-      if (this.ORowCount[row] == 3 || this.OColCount[col] == 3 ){
+      if (this.RowCount[row] == -3 || this.ColCount[col] == -3 ){
         //O WINS!!
         this.setState({winner:'O'});
       }
@@ -191,14 +188,14 @@ export default class App extends React.Component {
           </View>
 
             {/* draw lines for vertical columns on win */}
-            {(this.XColCount[0] == 3 || this.OColCount[0] == 3) ? <View style={[ styles.line, {transform: [{ translateX: -125}] } ]}></View>    :  null}
-            {(this.XColCount[1] == 3 || this.OColCount[1] == 3) ? <View style={ styles.line }></View>    :  null}
-            {(this.XColCount[2] == 3 || this.OColCount[2] == 3) ? <View style={[ styles.line, {transform: [{ translateX: 125}] } ]}></View>     :  null}
+            {(this.ColCount[0] == 3 || this.ColCount[0] == -3) ? <View style={[ styles.line, {transform: [{ translateX: -125}] } ]}></View>    :  null}
+            {(this.ColCount[1] == 3 || this.ColCount[1] == -3) ? <View style={ styles.line }></View>    :  null}
+            {(this.ColCount[2] == 3 || this.ColCount[2] == -3) ? <View style={[ styles.line, {transform: [{ translateX: 125}] } ]}></View>     :  null}
 
             {/* draw lines for horizontal columns on win */}
-            {(this.XRowCount[0] == 3 || this.ORowCount[0] == 3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'}, {translateX: -125} ]} ]}></View>    :  null}
-            {(this.XRowCount[1] == 3 || this.ORowCount[1] == 3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'} ]} ]}></View>     :  null}
-            {(this.XRowCount[2] == 3 || this.ORowCount[2] == 3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'}, {translateX: 125} ]} ]}></View>     :  null}
+            {(this.RowCount[0] == 3 || this.RowCount[0] == -3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'}, {translateX: -125} ]} ]}></View>    :  null}
+            {(this.RowCount[1] == 3 || this.RowCount[1] == -3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'} ]} ]}></View>     :  null}
+            {(this.RowCount[2] == 3 || this.RowCount[2] == -3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'}, {translateX: 125} ]} ]}></View>     :  null}
 
             {/* draw lines for horizontals on win */}
             {(this.rldiagonal == 3 || this.rldiagonal == -3) ? <View style={[ styles.diag, {transform: [ {rotate: '45deg'}, {translateX: -3} ]} ]} ></View>    :    null}
