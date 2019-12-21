@@ -55,7 +55,7 @@ export default class App extends React.Component {
     this.setState({plays: count});
 
     if(this.state.plays == 8){
-      //alert("Tie game over");
+      //Tie game over
       this.setState({tie:true});
     }
   }
@@ -78,11 +78,11 @@ export default class App extends React.Component {
         (this.state.board[row][col] == 'X')   ?   this.lrdiagonal++   :   this.lrdiagonal--;
       } 
       if (this.lrdiagonal == 3) { 
-        //alert("X WINS by LR diagonal!!!"); 
+        //X WINS by LR diagonal! 
         this.setState({winner:'X'});
       }
       if (this.lrdiagonal == -3) { 
-        //alert("O WINS by LR diagonal!!!");
+        //O WINS by LR diagonal
         this.setState({winner:'O'});
       }
     }
@@ -94,11 +94,11 @@ export default class App extends React.Component {
       (this.state.board[row][col] == 'X')   ?   this.rldiagonal++   :   this.rldiagonal--;
 
       if (this.rldiagonal == 3) { 
-        //alert("X WINS RL Diagonal!!!"); 
+        //X WINS RL Diagonal! 
         this.setState({winner:'X'});
       }
       if (this.rldiagonal == -3) { 
-        //alert("O WINS by RL diagonal!!!"); 
+        //O WINS by RL diagonal! 
         this.setState({winner:'O'});
       }
     }
@@ -109,7 +109,7 @@ export default class App extends React.Component {
       this.XColCount[col]++;
 
       if (this.XRowCount[row] == 3 || this.XColCount[col] == 3 ){
-        //alert("X WINS!!!");
+        //X WINS!!
         this.setState({winner:'X'});
       }
     }
@@ -119,11 +119,13 @@ export default class App extends React.Component {
       this.OColCount[col]++;
 
       if (this.ORowCount[row] == 3 || this.OColCount[col] == 3 ){
-        //alert("O WINS!!!")
+        //O WINS!!
         this.setState({winner:'O'});
       }
     }
   }
+
+
 
 
   play = (rowNo, colNo)=>{
@@ -197,6 +199,7 @@ export default class App extends React.Component {
             {(this.XRowCount[1] == 3 || this.ORowCount[1] == 3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'} ]} ]}></View>     :  null}
             {(this.XRowCount[2] == 3 || this.ORowCount[2] == 3) ? <View style={[ styles.line, {transform: [ {rotate: '90deg'}, {translateX: 125} ]} ]}></View>     : null}
 
+            {/* draw lines for horizontals on win */}
             {(this.rldiagonal == 3 || this.rldiagonal == -3) ? <View style={[ styles.diag, {transform: [ {rotate: '45deg'}, {translateX: -3} ]} ]} ></View>    :  null}
             {(this.lrdiagonal == 3 || this.lrdiagonal == -3) ? <View style={[ styles.diag, {transform: [ {rotate: '-45deg'}, {translateX: 3} ]} ]} ></View>    :  null}
 
