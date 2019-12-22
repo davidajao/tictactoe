@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
-import { AuthSession } from 'expo';
 
 const DeviceWidth = Dimensions.get('window').width;
 

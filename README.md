@@ -1,3 +1,5 @@
+I tested it using expo-cli
+
 Assumptions: 
 1.  Players take turns and X always starts
 2.  You can restart the game at any point in time
