@@ -1,4 +1,7 @@
 I tested it using expo-cli
+To run:
+navigate to project file and run npm install to install node modules
+NPM start to run scripts to start
 
 Assumptions: 
 1.  Players take turns and X always starts
